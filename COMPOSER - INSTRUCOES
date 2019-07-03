@@ -1,0 +1,526 @@
+COMPOSER
+________________________________
+
+* O QUE É?
+
+    - É um GERENCIADOR de DEPENDÊNCIAS PHP
+    - Ele instala as dependências necessárias para cada projeto.
+    - Ele guarda as dependências dentro do projeto.
+
+* COMO O COMPOSER SABE QUAL PACOTE BAIXAR p/ DETERMINADO PROJETO?
+
+    - Através do arquivo "COMPOSER.JSON".
+
+* ONDE o COMPOSER BUSCA os PACOTES?
+
+    - Por padrão, no site "PACKAGIST.OR" que é o REPOSITÓRIO PÚBLICO do COMPOSER.
+    - Todavia, pode ser configurado p/ buscar de outros lugares. Ex. GitHub, Repositório Privado
+
+* COMO CRIAR O ARQUIVO "COMPOSER.JSON"? 2 formas:
+
+    - 1ª FORMA: Criar manualmente o arquivo de configuração na raiz do projeto.
+
+    - 2ª FORMA (+ automatizada): Inicializar o composer na raiz do projeto:   CMD> COMPOSER INIT
+
+    Este comando inicia o Gerador de Configuração do Composer, o qual irá guiá-lo na criação da sua configuração do composer.json.
+
+    Próximos passos no CMD:
+
+    Definir o nome de Pacote (<vendor>/<name>): Ex. sanchesmil/buscador-cursos ou alura/buscador-cursos ou
+
+         Obs.1:  <vendor> = nome do fornecedor (nome de quem está distribuíndo o pacote) Ex.: nickname, nome de usuário do github, nome da empresa, etc
+                 <name>   = nome do pacote que está sendo criado.
+         Obs.2:  O <vendor> name permite que 2 distribuidores de pacote tenham pacotes com nomes iguais. Ex.: sanchesmil/json e cviniciussdias/json
+
+    Exemplo:
+
+    Package name (<vendor>/<name>) [pedrosanches/php-composer_alura]: sanchesmil/buscador-cursos  (obs. sanchesmil = nome de usuário do github)
+    Description []: Projeto que busca os cursos no site da Alura
+    Author [, n to skip]: Pedro Sanches <sanchesmil@gmial.com>
+    Minimum Stability []:   Enter   //verifica se deseja buscar pacotes em fase de desenvolvimento. Obs.:
+    Package Type (e.g. library, project, metapackage, composer-plugin) []:   Enter      //Tipo de pacote: project (projeto completo), library (biblioteca, parte, pedaço)
+    License []:   Enter             // Licença de código que será usada (ex.: MIT, Apache, GPL, etc ...)
+
+    Define your dependencies.    //Inicia a definição de dependências
+
+    Would you like to define your dependencies (require) interactively [yes]?  Enter         // Define previamente as dependências que serão necessárias no projeto.  ex. doctrine/orm
+    Search for a package:
+    Would you like to define your dev dependencies (require-dev) interactively [yes]? no     // Define as dependências de Desenvolvimento. Ex. pacote de testes
+
+    Resultado:
+
+    {
+        "name": "sanchesmil/buscador-cursos",
+        "description": "Projeto que busca os cursos de PHP no site da Alura",
+        "type": "library",
+        "authors": [
+            {
+                "name": "Pedro Sanches",
+                "email": "sanchesmil@gmail.com"
+            }
+        ],
+        "require": {}   // As dependências, neste caso, vazio
+    }
+
+    Do you confirm generation [yes]? Enter    (Gera automaticamente o arquivo "composer.json" na raiz do projeto).
+
+______________________________________________________________
+
+ALGUNS COMANDOS do COMPOSER:
+
+    cmd> COMPOSER REQUIRE <PACOTE>  (baixa o pacote especificado)
+
+    cmd> COMPOSER INSTALL ( = isntala todas as dependências declaradas no arquivo 'composer.json')
+
+    cmd> COMPOSER UPDATE  ( = atualiza as versões dos pacotes )
+
+______________________________________________________________
+
+ARQUIVO "COMPOSER.LOCK"
+
+ - É um arquivo gerado AUTOMATICAMENTE:
+
+   Quando o Composer termina a instalação, ele grava todos os pacotes e suas versões exatas no
+   arquivo composer.lock, bloqueando o projeto para essas versões específicas.
+   Isso garante que o projeto não seja interrompido devido a alterações inesperadas nas dependências.
+
+______________________________________________________________
+
+AUTOLOAD  = Carregamento automático de classes
+
+    EXISTEM 3 FORMAS de CONFIGURAR o AUTOLOAD:
+
+    1º - CONFORME PADRÃO PSR-4:
+
+        - Criar a chave de autoload em 'composer.json' e configurar o PSR-4:
+
+        "autoload": {
+            "psr-4": {
+                "Alura\\BuscadorDeCursos\\": "src/"    => Faz o mapeamento do Namespace para um diretório. Procura no diretório "src/" as classes com namespace "Alura\BuscardorDeCursos"
+            }
+        }
+
+    2º - VIA MAPEAMENTO de CLASSES:
+
+        - Acrescentar a chave "classmap" ao autoload em 'composer.json':
+
+        "autoload": {
+                "classmap": [
+                    "./Teste.php"      => Faz o autoload do ARQUIVO "Teste.php", independente da qtd de classes declaradas dentro deste arquivo.
+                ]
+        }
+
+    3º - VIA MAPEAMENTO de ARQUIVOS:
+
+        - Acrescentar a chave "FILE" ao autoload em 'composer.json':
+
+        "autoload": {
+                "files": [             => Faz o autoload do arquivo 'functions.php' em qualquer parte do projeto
+                    "./functions.php",
+                    "./helpers.php",
+                    "./views.php"
+                ]
+        }
+
+    * OBS.1: Toda vez que alterar os valores da chave "autoload" deve-se executar o comando abaixo:
+
+         - CMD> COMPOSER DUMPAUTOLOAD
+
+    * OBS.2: Pode-se configurar a chave 'autoload' com todas as formas (PSR-4, 'classname' e 'files'):
+
+     "autoload": {
+            "classmap": [
+                "./Teste.php"
+            ],
+
+            "files": ["./functions.php"],
+
+            "psr-4": {
+                "Alura\\BuscadorDeCursos\\": "src/"
+            }
+     }
+
+_____________________________________________________________________
+
+
+DEPENDÊNCIAS de DESENVOLVIMENTO (aquelas que não devem subir p/ produção)
+
+    - Existem dependências que são necessárias somente no ambiente de desenvolvimento
+    - Essas dependências não devem subir p/ ambiente de produção
+
+    * COMO BAIXAR AS DEPENDÊNCIAS de DESENVOLVIMENTO ?
+
+        Estando no ambiente de DESENVOLVIMENTO:
+
+        CMD> COMPOSER REQUIRE --DEV <NOME PACOTE>
+
+    * COMO IMPEDIR QUE AS DEPENDÊNCIAS DE DESENV. SUBAM P/ PRODUÇÃO ?
+
+        Estando no ambiente de PRODUÇÃO:
+
+        CMD> COMPOSER INSTALL --NO-DEV
+
+    * ONDE FICAN OS ARQUIVOS EXECUTÁVEIS DAS DEPENDÊNCIAS?
+
+        Muitas dependências fornecem arquivos executáveis, os quais
+        ficam armazenados dentro do diretório "VENDOR\BIN".
+
+    * COMO "CHAMAR" OS ARQUIVOS EXECUTÁVEIS na LINHA DE COMANDO?
+
+        Dentro do terminal na raiz do projeto:
+
+        Ex. Chamar a versão do PHPUnit:  CMD> VENDOR\BIN\PHPUNIT --version
+
+        Ex. Chamar uma classe de destes: CMD> VENDOR\BIN\PHPUNIT testes\TesteBuscadorDeCursos.php
+
+-----------------------------------------------------------------------
+
+PHPUnit
+
+    * O QUE É PHPUnit
+
+        - É uma ferramenta para TESTES UNITÁRIOS AUTOMATIZADOS.
+        - Ver curso PHPUnit na plataforma da Alura
+
+    * COMO INSTALAR?
+
+        CMD> COMPOSER REQUIRE --DEV phpunit/phpunit
+
+    * COMO EXECUTAR o PHPUNIT para DETECÇÃO de ERROS?
+
+        Ex.: Analisar erros dentro da pasta "tests/TestBuscadorDeCursos.php":
+
+        CMD> VENDOR\BIN\PHPUNIT tests\TestBuscadorDeCursos.php
+________________________________________________________________________
+
+PHP_CODE_SNIFFER  (PHPCS)
+
+    * 0 QUE é PHP_CODE_SNIFFER?
+
+        - É uma ferramenta que detecta erros de PADRÃO de CODIFICAÇÃO.
+
+    * COMO INSTALAR?
+
+            CMD> COMPOSER REQUIRE --DEV squizlabs/php_codesniffer
+
+    * COMO ELE FUNCIONA?
+
+        1º - Detecta violações de um padrão de codificação definido
+
+        2º - Pode corrigir automaticamente as violações do padrão de codificação
+
+    * DESCOBRIR + COMANDOS PHPCS:
+
+            CMD> VENDOR\BIN\PHPCS --help
+
+    * COMO EXECUTAR o PHPCS? (ANALISADOR)
+
+        Através do comando 'PHPCS'.
+
+        Ex. Analisar o código dos arquivos dentro da pasta "src/" com o padrão PSR12
+
+        CMD> VENDOR\BIN\PHPCS --STANDARD=PSR12 SRC\
+
+        Resposta:
+
+        FILE: C:\xampp\htdocs\phpComposer_Alura\src\Buscador.php
+        ----------------------------------------------------------------------
+        FOUND 4 ERRORS AFFECTING 4 LINES
+        ----------------------------------------------------------------------
+          1 | ERROR | [x] End of line character is invalid; expected "\n" but
+            |       |     found "\r\n"
+         20 | ERROR | [x] Expected 0 spaces before closing parenthesis; 1
+            |       |     found
+         40 | ERROR | [x] Expected 1 space(s) after closing parenthesis;
+            |       |     found 0
+         46 | ERROR | [x] Expected 1 newline at end of file; 0 found
+        ----------------------------------------------------------------------
+        PHPCBF CAN FIX THE 4 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+        ----------------------------------------------------------------------
+
+    * COMO CONSERTAR DE FORMA AUTOMÁTICA os ERROS QUE O CODE_SNIFFER ACHA?
+
+        Através do comando 'PHPCBF'.
+
+        Ex. Consertar o código dos arquivos dentro da pasta "src/" usando o padrão PSR12
+
+        CMD> VENDOR\BIN\PHPCBF --STANDART=PSR12 SRC/
+
+________________________________________________________________________
+
+PHAN
+
+    * O QUE é O PHAN?
+
+        - Phan é um ANALISADOR SINTÁTICO para PHP.
+        - Ele "auxilia" o "PHP CODE SNIFFER".
+        - Ele procura por problemas comuns e verifica a compatibilidade de tipos em várias
+          operações quando as informações de tipo estão disponíveis ou podem ser deduzidas.
+
+    * COMO INSTALAR o PHAN?
+
+        CMD> COMPOSER REQUIRE --DEV phan/phan
+
+    * CRIAR um ARQUIVO de CONFIGURAÇÃO do PHAN
+
+            - Na raiz do projeto: Criar a pasta '.PHAN' e dentro dela o arquivo 'CONFIG.PHP'
+            - Ver '.phan/config.php'
+
+    * COMO EXCUTAR O ANALISADOR PHAN ?
+
+        Usando o parâmetro "--ALLOW-POLYFILL-PARSER"
+
+        Ex.: CMD> >vendor\bin\phan --allow-polyfill-parser
+
+________________________________________________________________________
+
+TRABALHANDO com SCRIPTS P/ EXECUÇÃO AUTOMATIZADA
+
+    * O QUE OS SCRIPTS do COMPOSER PODEM FAZER?
+
+        - Scripts podem chamar ferramentas (bibliotecas) de terceiros;
+        - Scripts podem definir comandos que chamam ferramentas instalados pelo Composer;
+        - Scripts podem chamar comandos do sistema operacional;
+        - Scripts podem chamar códigos PHP;
+        - Scripts podem ser associados a eventos.
+
+    * CONFIGURAR o ARQUIVO 'COMPOSER.JSON'
+
+        Acrescentar a chave "SCRIPTS" e definir os pares 'chave - valor'.
+
+        Exemplo:
+
+        "scripts": {
+            "test" : "phpunit tests\\TestBuscadorDeCursos.php"
+            "cs": "phpcs --standard=PSR12 scr/",
+            "phan": "phan --allow-polyfill-parser"
+        }
+
+        Ex.: Executar o PHPUnit => cmd> COMPOSER TEST
+
+        Ex.: Executar o PHP_CODE_SNIFFER => cmd> COMPOSER CS
+
+        Ex.: Executar o analisador sintático PHAN => cmd> COMPOSER PHAN
+
+        Obs.: Se não aparecer nada na tela é por que não encontrou erros.
+
+    * COMO EXECUTAR 1 ÚNICO SCRIPT CHAMANDO TODOS OS OUTROS?
+
+        - Através de uma nova 'chave' que faça referência aos outros Scripts já declarados.
+
+            Exemplo: "check" : "[ "@phan","@cs","@test"]"
+
+            Obs.: Usar o '@' antes do nome do Script: Ex. @phan
+
+            "scripts": {
+                    "test" : "phpunit tests\\TestBuscadorDeCursos.php"
+                    "cs": "phpcs --standard=PSR12 scr/",
+                    "phan": "phan --allow-polyfill-parser",
+
+                    "check" = [ "@phan","@cs","@test"]
+            }
+
+            Execução: CMD> COMPOSER CHECK
+
+    * COMO ADICIONAR uma DESCRIÇÃO aos SCRIPTS?
+
+        - Criando uma nova chave no arquivo 'COMPOSER.JSON' chamada 'SCRIPT-DESCRIPTIONS'
+
+        Ex.:     "scripts-descriptions": {
+                     "check": "Roda as verificações do código. PHAN, PHPCS e PHPUNIT"
+                 }
+
+    * COMO CHAMAR SCRIPTS PRÓPRIOS após RODAR DETERMINADOS COMANDOS do COMPOSER?
+
+        - Através dos Enventos do Composer.
+
+        Ex.: Quando rodar "COMPOSER UPDATE" já realizar os testes unitarios e de código
+
+            Adicionar o evento/chave "POST-UPDATE-CMD" na área de SCRIPTS:
+
+            "scripts": {
+                    "test" : "phpunit tests\\TestBuscadorDeCursos.php"
+                    "cs": "phpcs --standard=PSR12 scr/",
+                    "phan": "phan --allow-polyfill-parser",
+                    "check" = [ "@phan","@cs","@test"]
+
+                    "post-update-cmd": [ "@check"]
+            }
+
+________________________________________________________________________
+
+INCLUINDO uma LICENÇA de PROJETO que NÃO SERÁ CONTINUADO / MANTIDO
+
+    No arquivo "composer.json" incluir a chave:
+
+        "license": "GPL-3.0"
+________________________________________________________________________
+
+INCLUINDO o ARQUIVO PADRÃO 'README.md' na raiz do projeto
+
+    - É o primeiro arquivo que o GITHUB e PACKAGIST lêem quando acessam o REPOSITÓRIO do PROJETO
+
+    - Contém a documentação do componente
+
+________________________________________________________________________
+
+COMO CRIAR um BINÁRIO EXECUTÁVEL para o ARQUIVO 'BUSCAR-CURSOS.PHP'
+
+    - Adicionar o comando abaixo na 1ª linha do arquivo 'BUSCAR-CURSOS.PHP'
+
+        #!/usr/bin/env php
+
+    - Adicionar a chave abaixo no arquivo "COMPOSER.JSON":
+
+        "bin" : ["buscar-cursos.php"]
+
+    Obs.:
+        - Após isso, atualizar o projeto no GIT:
+
+            CMD> git add .
+            CMD> git commit -m "Adicionando arquivo binario"
+
+        - Comitar a versão do Projeto no GIT:
+
+            CMD> git tag -a v1.1.0 (Nova funcionalidade incluída)
+
+            Obs. Abrirá o editor VIM para incluir um comentário à nova versão (TAG)
+
+            Cmds VIM:
+                      INSERIR = I
+                      SALVAR  = :W
+                      SAIR    = :Q
+
+        - Subir a alteração para o GITHUB:
+
+            CMD> git push origin master
+
+            CMD> git push origin v1.1.0
+
+     No PROJETO LOCAL:
+
+        - Atualizar o projeto com o COMPOSER:
+
+            CDM> composer update
+
+            Obs.: Será criada a pasta BIN com os arquivos executáveis.
+
+        - Chamar o executável: CMD> vendor\bin\buscar-cursos.php.bat
+________________________________________________________________________
+
+TRABALHANDO com GIT
+
+    - CRIAR o arquivo ".gitignore" na raiz do projeto
+
+        Incluir nome dos arquivos/pastas do projeto que não desejo que sejam comitados.
+
+        Ex.: Excluir arquivos da ide (PHPStorm) e de desenvolvimento (COMPOSER, DOCTRINE, GUZZLEHTTP, PHPUNIT, ect)
+
+            .idea/
+            vendor/
+
+    - COMANDOS GIT na Raiz do projeto:
+
+        GIT INIT = Inicia o GIT no Projeto
+
+        GIT STATUS = verifica os arquivos que subirão para o repositório
+
+        GIT ADD <FILE> ou . = adiciona os arquivos à área de estágio (STAGE), antes do commit
+
+        GIT RESET = desfaz um 'git add' = retira os arquivos da área de estágio
+
+        GIT COMMIT [-m] = faz o commit dos arquivos presentes no STAGE, podendo adicionar uma mensagem [-m]
+
+            Ex. CMD> git commit -m "Primeiro Commit"
+
+        GIT LOG = Mostra o histórico do Projeto
+
+        GIT LOG --pretty=oneline = Mostra o histórico em Linha Única
+
+        GIT LOG --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short  = Melhor maneira de visualizar o Histórico
+
+        GIT TAG -a vX.X.X = Cria as versões do Projeto
+
+            Ex. CMD> git tag -a v1.0.0  (Primeira versão)
+
+            Obs.: Semântica da Versão (Ex. v1.0.0)
+
+               1º nº = MAJOR VERSION (Versão Principal) => indica quebra de compatibilidade, como a alteração do retorno de uma função.
+               2º nº = MINOR VERSION (Versão menor)     => indica inclusão de novas funcionalidades
+               3º nº = PATCH VERSION (Versão remendo)   => Correção de bug ou mudança menor
+
+        GIT TAG = Vizualiza as TAGS criadas
+
+________________________________________________________________________
+
+CRIANDO um REPOSITÓRIO no GITHUB
+
+    Publicando o projeto no GITHUB
+
+    1º - Criar o repositório no GITHUB
+
+    2º - Adicionar o repositório ao projeto local via CMD
+
+        Exemplo: CMD> git remote add origin https://github.com/sanchesmil/buscador-cursos-alura.git
+
+    3º - Subir os arquivos para o repositório:
+
+        CMD> git push origin master
+
+        Inserir: Login e Senha GitHub (sanchesmil | .91....50.)
+
+    4º - Subir a versão do Projeto p/ o Repositório:
+
+        CMD> git push origin v1.0.0
+
+________________________________________________________________________
+
+PUBLICANDO o PACOTE no PACKAGIST
+
+    1º - Acessar https://packagist.org
+
+    2º - Logar com a conta do GitHub, (sanchesmil, .91....50.)
+
+    3º - Clicar em SUBMIT
+
+    4º - Copiar a url do repositório do projeto no GitHub e colar no campo solicitado
+
+    5º - Clicar em Check e Submit
+
+________________________________________________________________________
+
+BAIXANDO o PACOTE do PACKAGIST
+
+    1º - Criar um novo projeto
+
+    2º - Na raiz do projeto via CMD digitar: 'composer require <vendor/pacote>'
+
+        Exemplo:
+
+        CMD> COMPOSER REQUIRE SANCHESMIL/BUSCADOR-CURSOS
+
+        Obs.: Será criada uma pasta "VENDOR" dentro do projeto com todas as dependências baixadas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

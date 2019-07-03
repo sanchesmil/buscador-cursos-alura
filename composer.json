@@ -1,0 +1,46 @@
+{
+    "name": "sanchesmil/buscador-cursos",
+    "description": "Projeto que busca os cursos de PHP no site da Alura",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Pedro Sanches",
+            "email": "sanchesmil@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "./Teste.php"
+        ],
+
+        "files": ["./functions.php"],
+
+        "psr-4": {
+            "Alura\\BuscadorDeCursos\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/dom-crawler": "^4.3.2",
+        "symfony/css-selector": "^4.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.2",
+        "squizlabs/php_codesniffer": "^3.4",
+        "phan/phan": "^2.2"
+    },
+    "scripts": {
+        "test" : "vendor\\bin\\phpunit tests\\TestBuscadorDeCursos.php",
+        "cs": "phpcs --standard=PSR12 src/",
+        "phan": "phan --allow-polyfill-parser",
+
+        "check" : ["@phan","@cs","@test"],
+
+        "post-update-cmd": [ "@check"]
+    },
+    "scripts-descriptions": {
+        "check": "Roda as verificações do código. PHAN, PHPCS e PHPUNIT"
+    },
+    "license": "GPL-3.0",
+    "bin": ["buscar-cursos.php"]
+}
