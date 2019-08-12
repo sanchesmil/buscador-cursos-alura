@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/bin/env php  <!-- Torna este arquivo um binário executavel -->
 <?php
 
 $path =
@@ -12,7 +12,7 @@ use Alura\BuscadorDeCursos\Buscador;
 use GuzzleHttp\Client;  //O Guzzle é um cliente HTTP PHP que facilita o envio de solicitações HTTP
 use Symfony\Component\DomCrawler\Crawler;  //DomCrawler é um componente que facilita a NAVEGAÇÃO no DOM de páginas HTML e XML.
 
-$client = new Client(['base_uri' => 'https://www.alura.com.br/']);  //Cria um cliente do Guzzle com a URL base
+$client = new Client(['base_uri' => 'https://www.alura.com.br/']);  //Cria um cliente do Guzzle com a URL base do site pesquisado
 
 //Crawler = percorredor
 $crawler = new Crawler();  //A classe Crawler fornece métodos para consultar e manipular documentos HTML e XML.

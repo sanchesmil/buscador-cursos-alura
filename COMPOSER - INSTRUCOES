@@ -40,7 +40,7 @@ ________________________________
 
     Package name (<vendor>/<name>) [pedrosanches/php-composer_alura]: sanchesmil/buscador-cursos  (obs. sanchesmil = nome de usuário do github)
     Description []: Projeto que busca os cursos no site da Alura
-    Author [, n to skip]: Pedro Sanches <sanchesmil@gmial.com>
+    Author [, n to skip]: Pedro Sanches <sanchesmil@gmail.com>
     Minimum Stability []:   Enter   //verifica se deseja buscar pacotes em fase de desenvolvimento. Obs.:
     Package Type (e.g. library, project, metapackage, composer-plugin) []:   library (Enter)  // Informa o tipo de pacote que vou criar/disponibilizar: project (projeto completo) ou library (biblioteca, parte, pedaço)
     License []:   Enter             // Licença de código que será usada (ex.: MIT, Apache, GPL, etc ...)
@@ -388,65 +388,6 @@ TRABALHANDO com SCRIPTS P/ EXECUÇÃO AUTOMATIZADA
 
 ________________________________________________________________________
 
-INCLUINDO uma LICENÇA de PROJETO que NÃO SERÁ CONTINUADO / MANTIDO
-
-    No arquivo "composer.json" incluir a chave:
-
-        "license": "GPL-3.0"
-________________________________________________________________________
-
-INCLUINDO o ARQUIVO PADRÃO 'README.md' na raiz do projeto
-
-    - É o primeiro arquivo que o GITHUB e PACKAGIST lêem quando acessam o REPOSITÓRIO do PROJETO
-
-    - Contém a documentação do componente
-
-________________________________________________________________________
-
-COMO CRIAR um BINÁRIO EXECUTÁVEL para o ARQUIVO 'BUSCAR-CURSOS.PHP'
-
-    - Adicionar o comando abaixo na 1ª linha do arquivo 'BUSCAR-CURSOS.PHP'
-
-        #!/usr/bin/env php
-
-    - Adicionar a chave abaixo no arquivo "COMPOSER.JSON":
-
-        "bin" : ["buscar-cursos.php"]
-
-    Obs.:
-        - Após isso, atualizar o projeto no GIT:
-
-            CMD> git add .
-            CMD> git commit -m "Adicionando arquivo binario"
-
-        - Comitar a versão do Projeto no GIT:
-
-            CMD> git tag -a v1.1.0 (Nova funcionalidade incluída)
-
-            Obs. Abrirá o editor VIM para incluir um comentário à nova versão (TAG)
-
-            Cmds VIM:
-                      INSERIR = I
-                      SALVAR  = :W
-                      SAIR    = :Q
-
-        - Subir a alteração para o GITHUB:
-
-            CMD> git push origin master
-
-            CMD> git push origin v1.1.0
-
-     No PROJETO LOCAL:
-
-        - Atualizar o projeto com o COMPOSER:
-
-            CDM> composer update
-
-            Obs.: Será criada a pasta BIN com os arquivos executáveis.
-
-        - Chamar o executável: CMD> vendor\bin\buscar-cursos.php.bat
-________________________________________________________________________
-
 TRABALHANDO com GIT
 
     - CRIAR o arquivo ".gitignore" na raiz do projeto
@@ -481,6 +422,13 @@ TRABALHANDO com GIT
         GIT TAG -a vX.X.X = Cria as versões do Projeto
 
             Ex. CMD> git tag -a v1.0.0  (Primeira versão)
+
+            Obs. Abrirá o editor VIM para incluir um comentário à nova versão (TAG)
+
+            Cmds VIM:
+                      INSERIR = I
+                      SALVAR  = :W
+                      SAIR    = :Q
 
             Obs.: Semântica da Versão (Ex. v1.0.0)
 
@@ -530,7 +478,7 @@ ________________________________________________________________________
 
 BAIXANDO o PACOTE do PACKAGIST
 
-    1º - Criar um novo projeto
+    1º - Criar um novo projeto 
 
     2º - Na raiz do projeto via CMD digitar: 'composer require <vendor/pacote>'
 
@@ -539,6 +487,63 @@ BAIXANDO o PACOTE do PACKAGIST
         CMD> COMPOSER REQUIRE SANCHESMIL/BUSCADOR-CURSOS
 
         Obs.: Será criada uma pasta "VENDOR" dentro do projeto com todas as dependências baixadas
+
+    3º - Configurar o projeto para usar o pacote baixado.
+
+________________________________________________________________________
+
+INCLUINDO uma LICENÇA de PROJETO que NÃO SERÁ CONTINUADO / MANTIDO
+
+    No arquivo "composer.json" incluir a chave:
+
+        "license": "GPL-3.0"
+________________________________________________________________________
+
+INCLUINDO o ARQUIVO PADRÃO 'README.md' na raiz do projeto
+
+    - É o primeiro arquivo que o GITHUB e PACKAGIST lêem quando acessam o REPOSITÓRIO do PROJETO
+
+    - Contém a documentação do componente
+________________________________________________________________________
+
+COMO CRIAR um BINÁRIO EXECUTÁVEL para o ARQUIVO 'BUSCAR-CURSOS.PHP'
+
+    - Adicionar o código abaixo na 1ª linha do arquivo 'BUSCAR-CURSOS.PHP'
+
+        #!/usr/bin/env php
+
+    - Declara a chave abaixo no arquivo "COMPOSER.JSON":
+
+        "bin" : ["buscar-cursos.php"]
+
+    Obs.:
+        - Após isso, atualizar o projeto no GIT:
+
+            CMD> git add .
+            CMD> git commit -m "Adicionando arquivo binario"
+
+        - Comitar a versão do Projeto no GIT: 
+
+            Ex. CMD> git tag -a v1.1.0
+
+        - Subir a alteração para o GITHUB:
+
+            CMD> git push origin master
+
+            CMD> git push origin v1.1.0
+
+     No PROJETO LOCAL:
+
+        - Atualizar o projeto com o COMPOSER:
+
+            CDM> composer update
+
+            Obs.: Será criada a pasta BIN com os arquivos executáveis.
+
+        - Chamar o executável: CMD> vendor\bin\buscar-cursos.php.bat
+________________________________________________________________________
+
+
 
 
 
