@@ -1,4 +1,4 @@
-#!/usr/bin/env php  <!-- Torna este arquivo um binário executavel -->
+#!/usr/bin/env php  
 <?php
 
 $path =
