@@ -25,7 +25,7 @@ class Buscador
 
     public function buscar(string $url) : array
     {
-        //Obtem a página HTML com os cursos do site da Alura
+        //Obtem a página HTML com os cursos do site informado na url (neste caso, alura)
         $resposta = $this->httpClient->request('GET', $url);
 
         //Pega somente o corpo da página

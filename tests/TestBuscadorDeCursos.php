@@ -16,15 +16,14 @@ class TestBuscadorDeCursos extends TestCase
 
     protected function setUp(): void
     {
-        $html = <<<FIM
+        $html = "
         <html>
             <body>
-                <span class="card-curso__nome">Curso Teste 1</span>
-                <span class="card-curso__nome">Curso Teste 2</span>
-                <span class="card-curso__nome">Curso Teste 3</span>
+                <span class='card-curso__nome'>Curso Teste 1</span>
+                <span class='card-curso__nome'>Curso Teste 2</span>
+                <span class='card-curso__nome'>Curso Teste 3</span>
             </body>
-        </html>
-        FIM;
+        </html>";
 
 
         $stream = $this->createMock(StreamInterface::class);
@@ -60,5 +59,6 @@ class TestBuscadorDeCursos extends TestCase
         $this->assertEquals('Curso Teste 1', $cursos[0]);
         $this->assertEquals('Curso Teste 2', $cursos[1]);
         $this->assertEquals('Curso Teste 3', $cursos[2]);
+
     }
 }

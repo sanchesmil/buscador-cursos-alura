@@ -20,17 +20,21 @@ ________________________________
 
     - 1ª FORMA: Criar manualmente o arquivo de configuração na raiz do projeto.
 
-    - 2ª FORMA (+ automatizada): Inicializar o composer na raiz do projeto:   CMD> COMPOSER INIT
+    - 2ª FORMA (+ automatizada): Inicializar o composer na Pasta do projeto via cmd:   
 
-    Este comando inicia o Gerador de Configuração do Composer, o qual irá guiá-lo na criação da sua configuração do composer.json.
+        cmd> COMPOSER INIT
+
+        Este comando inicia o Gerador de Configuração do Composer, o qual irá guiá-lo na criação da sua configuração do composer.json.
 
     Próximos passos no CMD:
 
-    Definir o nome de Pacote (<vendor>/<name>): Ex. sanchesmil/buscador-cursos ou alura/buscador-cursos ou
+    Definir o nome de Projeto/Pacote (<vendor>/<name>):  (Um pacote serve p/ disponibilizar o projeto para terceiros)
+
+         Ex. sanchesmil/buscador-cursos
 
          Obs.1:  <vendor> = nome do fornecedor (nome de quem está distribuíndo o pacote) Ex.: nickname, nome de usuário do github, nome da empresa, etc
-                 <name>   = nome do pacote que está sendo criado.
-         Obs.2:  O <vendor> name permite que 2 distribuidores de pacote tenham pacotes com nomes iguais. Ex.: sanchesmil/json e cviniciussdias/json
+                 <name>   = nome do projeto/pacote que está sendo criado.
+         Obs.2:  O uso de <vendor>/<name> permite que 2 distribuidores tenham pacotes com nomes iguais. Ex.: sanchesmil/json e cviniciussdias/json
 
     Exemplo:
 
@@ -38,16 +42,16 @@ ________________________________
     Description []: Projeto que busca os cursos no site da Alura
     Author [, n to skip]: Pedro Sanches <sanchesmil@gmial.com>
     Minimum Stability []:   Enter   //verifica se deseja buscar pacotes em fase de desenvolvimento. Obs.:
-    Package Type (e.g. library, project, metapackage, composer-plugin) []:   Enter      //Tipo de pacote: project (projeto completo), library (biblioteca, parte, pedaço)
+    Package Type (e.g. library, project, metapackage, composer-plugin) []:   library (Enter)  // Informa o tipo de pacote que vou criar/disponibilizar: project (projeto completo) ou library (biblioteca, parte, pedaço)
     License []:   Enter             // Licença de código que será usada (ex.: MIT, Apache, GPL, etc ...)
 
     Define your dependencies.    //Inicia a definição de dependências
 
-    Would you like to define your dependencies (require) interactively [yes]?  Enter         // Define previamente as dependências que serão necessárias no projeto.  ex. doctrine/orm
+    Would you like to define your dependencies (require) interactively [yes]?  Enter         // Pode ou não definir previamente as dependências que serão necessárias no projeto.  ex. doctrine/orm
     Search for a package:
     Would you like to define your dev dependencies (require-dev) interactively [yes]? no     // Define as dependências de Desenvolvimento. Ex. pacote de testes
 
-    Resultado:
+    Resultado no arquivo 'composer.json':
 
     {
         "name": "sanchesmil/buscador-cursos",
@@ -96,7 +100,7 @@ AUTOLOAD  = Carregamento automático de classes
 
         "autoload": {
             "psr-4": {
-                "Alura\\BuscadorDeCursos\\": "src/"    => Faz o mapeamento do Namespace para um diretório. Procura no diretório "src/" as classes com namespace "Alura\BuscardorDeCursos"
+                "Alura\\BuscadorDeCursos\\": "src/"    => Faz o mapeamento do Namespace de uma ou mais classes para um diretório. Procura no diretório "src/" as classes com namespace "Alura\BuscardorDeCursos"
             }
         }
 
@@ -110,6 +114,8 @@ AUTOLOAD  = Carregamento automático de classes
                 ]
         }
 
+        Obs.: Classmap serve para realizar o carregamento automático de classes que não seguem o padrão PSR-4, ou seja, classes de sistemas legados.
+
     3º - VIA MAPEAMENTO de ARQUIVOS:
 
         - Acrescentar a chave "FILE" ao autoload em 'composer.json':
@@ -121,6 +127,9 @@ AUTOLOAD  = Carregamento automático de classes
                     "./views.php"
                 ]
         }
+
+        Obs.: Pode-se usar 'files' para carregar bibliotecas de funções, helpers e outros arquivos que não forem classes.
+
 
     * OBS.1: Toda vez que alterar os valores da chave "autoload" deve-se executar o comando abaixo:
 
@@ -172,6 +181,20 @@ DEPENDÊNCIAS de DESENVOLVIMENTO (aquelas que não devem subir p/ produção)
         Ex. Chamar a versão do PHPUnit:  CMD> VENDOR\BIN\PHPUNIT --version
 
         Ex. Chamar uma classe de destes: CMD> VENDOR\BIN\PHPUNIT testes\TesteBuscadorDeCursos.php
+
+-----------------------------------------------------------------------
+
+DEPENDÊNCIAS de PRODUÇÃO (aquelas que são obrigatórias p/ o sistema funcionar)
+
+    COMO INSTALAR as DEPENDENCIAS do PROJETO no SERVIDOR de PRODUÇÃO?
+
+    Após finalizar o projeto e envia-lo para o servidor de produção, deve-se executar:
+
+        cmd>COMPOSER INSTALL --NO--DEV
+
+        Obs.: Dessa forma ele baixa as dependencias que estão declaradas na chave 'require' dentro do arquivo 'composer.json',
+              descartando aquelas dependências que estão na chave 'require_dev', as quais não são necessárias no
+              ambiente de produção.
 
 -----------------------------------------------------------------------
 
@@ -332,7 +355,7 @@ TRABALHANDO com SCRIPTS P/ EXECUÇÃO AUTOMATIZADA
 
     * COMO CHAMAR SCRIPTS PRÓPRIOS após RODAR DETERMINADOS COMANDOS do COMPOSER?
 
-        - Através dos Enventos do Composer.
+        - Através dos EVENTOS do Composer.
 
         Ex.: Quando rodar "COMPOSER UPDATE" já realizar os testes unitarios e de código
 
@@ -346,6 +369,22 @@ TRABALHANDO com SCRIPTS P/ EXECUÇÃO AUTOMATIZADA
 
                     "post-update-cmd": [ "@check"]
             }
+
+
+        OBS: Ver mais sobre EVENTOS do COMPOSER em: https://getcomposer.org/doc/articles/scripts.md
+
+    ----------------------------------------
+
+    OBS.: É possível configurar um Script que, com apenas 1 comando, realize todo o processo de build (construção), o qual executará todos os testes, verificações e demais ações necessárias para colocar a aplicação na produção.
+
+        - BUILD (Construir) = Compilar o projeto
+        - DEPLOY (Implantar) = Copiar/Instalar o projeto para um ambiente (produção/teste ou desenvolvimento).    
+
+        Uma COMPILAÇÃO (BUILD) é o que você IMPLANTA (DEPLOY) em um ambiente.
+
+        Ex.:
+         O executável (jar, apk, war, exe, projeto js etc) é chamado de build. 
+         Quando você instala / configura-os no ambiente de produção, desenvolvimento ou teste, ele é conhecido como deployment.
 
 ________________________________________________________________________
 
@@ -412,9 +451,9 @@ TRABALHANDO com GIT
 
     - CRIAR o arquivo ".gitignore" na raiz do projeto
 
-        Incluir nome dos arquivos/pastas do projeto que não desejo que sejam comitados.
+        Incluir nome dos arquivos/pastas do projeto que não desejo que sejam comitados no git.
 
-        Ex.: Excluir arquivos da ide (PHPStorm) e de desenvolvimento (COMPOSER, DOCTRINE, GUZZLEHTTP, PHPUNIT, ect)
+        Ex.: Excluir arquivos da ide (PHPStorm) e de pacotes de desenvolvimento (vendor) como PHPUNIT, PHAN, etc)
 
             .idea/
             vendor/
@@ -435,7 +474,7 @@ TRABALHANDO com GIT
 
         GIT LOG = Mostra o histórico do Projeto
 
-        GIT LOG --pretty=oneline = Mostra o histórico em Linha Única
+        GIT LOG --pretty=oneline => Mostra o histórico em Linha Única
 
         GIT LOG --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short  = Melhor maneira de visualizar o Histórico
 
@@ -500,18 +539,6 @@ BAIXANDO o PACOTE do PACKAGIST
         CMD> COMPOSER REQUIRE SANCHESMIL/BUSCADOR-CURSOS
 
         Obs.: Será criada uma pasta "VENDOR" dentro do projeto com todas as dependências baixadas
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
